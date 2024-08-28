@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Game</title>
+    <style>
+        body{
+            background-color: #191919;
+            color:white;
+            font-family: cursive;
+        }
+        .move{
+            background-color: transparent;
+            border: 3px solid white;
+            border-radius: 60px;
+            width:120px;
+            height:120px;
+            margin-right:7px;
+        }
+        .move:hover{
+            background-color: #222222;
+            cursor: pointer;
+        }
+        .move:active{
+            background-color: rgb(7, 59, 7);
+        }
+        .reset{
+            background-color:white;
+            font-size: 15px;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: cursive;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="myElement" 
+    onmouseenter="document.getElementById('myElement').innerHTML='Choose a move !'"
+    onmouseleave="document.getElementById('myElement').innerHTML='Rock Paper Scissors'"
+    >Rock Paper Scissors</h1>
+    <button class="move" onclick="playGame('rock')"><img alt="rock" src="images/rock-emoji.png" width="50px"></button>
+    <button class="move" onclick="playGame('paper')"><img alt="paper" src="images/paper-emoji.png" width="50px"></button>
+    <button class="move" onclick="playGame('scissors')"><img alt="scissors" src="images/scissors-emoji.png" width="50px"></button><br><br>
+    <h2 class="js-result"></h2>
+    <p class="js-moves"></p><br>
+    <p class="js-score"></p>
+    <button class="reset" onclick="score = { wins: 0, losses: 0, ties: 0 };localStorage.setItem('score', JSON.stringify(score));
+    // IMPORTANT HTML TEXT CHANGES AUTOMATICALLY WITH JS VARIABLES
+        document.querySelector('.js-score').innerHTML = 'Wins: '+score.wins+', Losses: '+score.losses+', Ties: '+score.ties ;
+        document.querySelector('.js-result').innerHTML = ' ' ;
+        document.querySelector('.js-moves').innerHTML = ' ';
+    ">Reset Score</button>
+
+    <script> 
+        let score = JSON.parse(localStorage.getItem('score'));
+        if (!score) {
+            score = { wins: 0, losses: 0, ties: 0 };
+        }
+        function playGame(playerMove){
+            let result ='';
+            const ComputerMove = pickComputerMove();
+            if(playerMove==='scissors'){
+                if (ComputerMove === 'scissors'){
+                    result = 'Tie.';
+                }else{
+                    if (ComputerMove === 'paper'){
+                        result = 'You win !';
+                    }else{
+                        result = 'You lose.';
+                    }
+                }
+            }else if(playerMove==='paper'){
+                if (ComputerMove === 'paper'){
+                    result = 'Tie.';
+                }else{
+                    if (ComputerMove === 'rock'){
+                        result = 'You win !';
+                    }else{
+                        result = 'You lose.';
+                    }
+                }
+            } else {
+                if (ComputerMove === 'rock'){
+                    result = 'Tie.';
+                }else{
+                    if (ComputerMove === 'scissors'){
+                        result = 'You win !';
+                    }else{
+                        result = 'You lose.'
+                    }
+                }
+            }
+            if (result==='You win !'){
+                score.wins ++;
+            }else if (result==='You lose.'){
+                score.losses ++;
+            }else {
+                score.ties ++;
+            }
+            // AFTER WE MODIFY THE SCORE
+            // FIRST WE SAVE IN LOCAL STORAGE
+            localStorage.setItem('score',JSON.stringify(score));
+            //SECONDLY WE UPDATE THE SCORE TEXT
+        document.querySelector('.js-score').innerHTML = 'Wins: '+score.wins+', Losses: '+score.losses+', Ties: '+score.ties ;
+        document.querySelector('.js-result').innerHTML = result ;
+        document.querySelector('.js-moves').innerHTML = 'You <span class="js-you"></span> &nbsp;<span class="js-computer"></span> Computer';
+        // AJOUTER DES ELEMENTS HTML AVEC JAVASCRIPT
+        document.querySelector('.js-you').innerHTML = `<img alt="Your Move" src="Outils_Logos/${playerMove}-emoji.png" width="50px">`;
+        document.querySelector('.js-computer').innerHTML = `<img alt="Computer Move" src="Outils_Logos/${ComputerMove}-emoji.png" width="50px">`;
+        }
+        function pickComputerMove(){
+            const RandomNumber = Math.random();
+            let ComputerMove ='';
+            if (RandomNumber<1/3){
+                ComputerMove = 'rock';
+            } else{
+                if (RandomNumber<2/3){
+                    ComputerMove = 'paper';
+                } else {
+                    ComputerMove = 'scissors';
+                }
+            }
+            return ComputerMove;
+        }
+        
+        // IMPORTANT HTML TEXT CHANGES AUTOMATICALLY WITH JS VARIABLES
+        document.querySelector('.js-score').innerHTML = 'Wins: '+score.wins+', Losses: '+score.losses+', Ties: '+score.ties ;
+    </script>
+</body>
+</html>
